@@ -1,0 +1,29 @@
+-- 1. Create a user named library_user on localhost
+CREATE USER 'library_user'@'localhost' IDENTIFIED BY 'library123';
+
+-- 2. Grant SELECT privilege on LibraryDB.Books
+GRANT SELECT ON LibraryDB.Books TO 'library_user'@'localhost';
+
+-- 3. Grant INSERT privilege on LibraryDB.Books
+GRANT INSERT ON LibraryDB.Books TO 'library_user'@'localhost';
+
+-- 4. Grant UPDATE privilege on LibraryDB.Books
+GRANT UPDATE ON LibraryDB.Books TO 'library_user'@'localhost';
+
+-- 5. Display the privileges granted to library_user
+SHOW GRANTS FOR 'library_user'@'localhost';
+
+-- 6. Revoke INSERT privilege from library_user
+REVOKE INSERT ON LibraryDB.Books FROM 'library_user'@'localhost';
+
+-- 7. Revoke UPDATE privilege from library_user
+REVOKE UPDATE ON LibraryDB.Books FROM 'library_user'@'localhost';
+
+-- 8. Grant SELECT privilege on all tables in LibraryDB
+GRANT SELECT ON LibraryDB.* TO 'library_user'@'localhost';
+
+-- 9. Revoke SELECT privilege on LibraryDB.Books
+REVOKE SELECT ON LibraryDB.Books FROM 'library_user'@'localhost';
+
+-- 10. Display the final privileges of library_user
+SHOW GRANTS FOR 'library_user'@'localhost';

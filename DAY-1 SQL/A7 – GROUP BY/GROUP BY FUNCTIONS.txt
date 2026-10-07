@@ -1,0 +1,41 @@
+-- 65. Count the number of books in each category
+SELECT category, 
+COUNT(*) AS book_count 
+FROM Books 
+GROUP BY category;
+
+-- 66. Find the average price of books in each category
+SELECT category, AVG(price) AS average_price 
+FROM Books GROUP BY category;
+
+-- 67. Find the highest price in each category
+SELECT category, MAX(price) AS highest_price 
+FROM Books GROUP BY category;
+
+-- 68. Find the lowest price in each category
+SELECT category, MIN(price) AS lowest_price 
+FROM Books GROUP BY category;
+
+-- 69. Find the total stock quantity for each category
+SELECT category, SUM(stock_quantity) AS total_stock 
+FROM Books GROUP BY category;
+
+-- 70. Find the total value of books in each category
+SELECT category, SUM(price*stock_quantity) AS total_value 
+FROM Books GROUP BY category;
+
+-- 71. Display categories having more than 2 books
+SELECT category, COUNT(*) AS book_count 
+FROM Books GROUP BY category HAVING COUNT(*) > 2;
+
+-- 72. Display categories whose average book price is greater than ₹500
+SELECT category, AVG(price) AS average_price 
+FROM Books GROUP BY category HAVING AVG(price) > 500;
+
+-- 73. Count how many books each author has written in the library
+SELECT author, COUNT(*) AS book_count 
+FROM Books GROUP BY author;
+
+-- 74. Find the average price of books written by each author
+SELECT author, AVG(price) AS average_price 
+FROM Books GROUP BY author;

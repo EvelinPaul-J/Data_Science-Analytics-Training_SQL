@@ -1,0 +1,33 @@
+-- 21. Update the price of the book with book_id = 103
+UPDATE Books 
+SET price=1000.00 
+WHERE book_id=103;
+
+-- 22. Increase the price of all Technology books by 10%
+UPDATE Books
+SET price=price*1.10
+WHERE category='Technology';
+
+-- 23. Increase the stock quantity of all books by 5
+UPDATE Books 
+SET stock_quantity=stock_quantity+5;
+
+-- 24. Update the city of member 202
+UPDATE Members 
+SET city='Tirunelveli' 
+WHERE member_id=202;
+
+-- 25. Update the email address of member 205
+UPDATE Members 
+SET email='vijayakumari24@gmail.com' 
+WHERE member_id=205;
+
+-- 26. Change the category of book 102
+UPDATE Books 
+SET category='Fiction' 
+WHERE book_id=102;
+
+-- 27. Update the return date of borrow record 305
+UPDATE Borrow 
+SET return_date='2026-12-18' 
+WHERE borrow_id=305;

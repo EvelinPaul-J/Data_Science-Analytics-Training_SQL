@@ -1,0 +1,54 @@
+-- 32. Display all books
+SELECT * FROM Books;
+
+-- 33. Display book name and author
+SELECT book_name, author 
+FROM Books;
+
+-- 34. Display book name, category and price
+SELECT book_name, category, price 
+FROM Books;
+
+-- 35. Display books with price greater than 500
+SELECT * FROM Books
+WHERE price > 500;
+
+-- 36. Display books with price less than 500
+SELECT * FROM Books 
+WHERE price < 500;
+
+-- 37. Display books with price between 300 and 800
+SELECT * FROM Books 
+WHERE price BETWEEN 300 AND 800;
+
+-- 38. Display books in Technology category
+SELECT * FROM Books 
+WHERE category = 'Technology';
+
+-- 39. Display books written by Robert Brown
+SELECT * FROM Books 
+WHERE author = 'Robert Brown';
+
+-- 40. Display books whose name starts with S
+SELECT * FROM Books 
+WHERE book_name LIKE 'S%';
+
+-- 41. Display books whose name contains SQL
+SELECT * FROM Books 
+WHERE book_name LIKE '%SQL%';
+
+-- 42. Display books in Technology or Education category
+SELECT * FROM Books 
+WHERE category IN ('Technology', 'Education');
+
+-- 43. Display books with price not equal to 500
+SELECT * FROM Books 
+WHERE price <> 500;
+
+-- 44. Display books with stock quantity greater than 10
+SELECT * FROM Books 
+WHERE stock_quantity > 10;
+
+-- 45. Display books with stock quantity between 5 and 15
+SELECT * FROM Books 
+WHERE stock_quantity BETWEEN 5 AND 15;

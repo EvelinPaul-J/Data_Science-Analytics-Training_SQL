@@ -1,0 +1,5 @@
+-- 1. Creating a database named LibraryDB
+CREATE DATABASE LibraryDB;
+
+-- 2. Select LibraryDB as the active database
+USE LibraryDB;

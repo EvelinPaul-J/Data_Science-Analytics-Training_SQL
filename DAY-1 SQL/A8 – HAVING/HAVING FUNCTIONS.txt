@@ -1,0 +1,19 @@
+-- 75. Display categories containing more than 2 books
+SELECT category, COUNT(*) AS book_count 
+FROM Books GROUP BY category HAVING COUNT(*) > 2;
+
+-- 76. Display categories having an average price greater than ₹500
+SELECT category, AVG(price) AS average_price 
+FROM Books GROUP BY category HAVING AVG(price) > 500;
+
+-- 77. Display authors who have more than one book
+SELECT author, COUNT(*) AS book_count 
+FROM Books GROUP BY author HAVING COUNT(*) > 1;
+
+-- 78. Display categories having total stock quantity greater than 20
+SELECT category, SUM(stock_quantity) AS total_stock 
+FROM Books GROUP BY category HAVING SUM(stock_quantity) > 20;
+
+-- 79. Display authors whose average book price is greater than ₹600
+SELECT author, AVG(price) AS average_price 
+FROM Books GROUP BY author HAVING AVG(price) > 600;

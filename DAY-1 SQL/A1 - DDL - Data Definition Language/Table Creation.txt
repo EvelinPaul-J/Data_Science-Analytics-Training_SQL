@@ -1,0 +1,44 @@
+-- 3. Create Books table
+CREATE TABLE Books
+(book_id INT PRIMARY KEY, book_name VARCHAR(50), author VARCHAR(50), price DEC(10,2));
+
+-- 4. Create Members table
+CREATE TABLE Members
+(member_id INT PRIMARY KEY, member_name VARCHAR(50), city VARCHAR(50), phone VARCHAR(50));
+
+-- 5. Create Borrow table
+CREATE TABLE Borrow
+(borrow_id INT PRIMARY KEY, book_id INT, member_id INT, borrow_date DATE);
+
+-- 6. Add category column to Books
+ALTER TABLE Books
+ADD category VARCHAR(50);
+
+-- 7. Add quantity column to Books
+ALTER TABLE Books
+ADD quantity INT;
+
+-- 8. Add email column to Members
+ALTER TABLE Members 
+ADD email VARCHAR(50);
+
+-- 9. Add return_date column to Borrow
+ALTER TABLE Borrow 
+ADD return_date DATE;
+
+-- 10. Modify price column to decimal
+ALTER TABLE Books 
+MODIFY price DECIMAL(10,2);
+
+-- 11. Rename quantity column to stock_quantity
+ALTER TABLE Books 
+RENAME COLUMN quantity TO stock_quantity;
+
+-- 12. Display the structure of Books
+DESC Books;
+
+-- 13. Display the structure of Members
+DESC Members;
+
+-- 14. Display the structure of Borrow
+DESC Borrow;

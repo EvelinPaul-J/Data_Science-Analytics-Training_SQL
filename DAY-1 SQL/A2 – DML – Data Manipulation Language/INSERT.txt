@@ -1,0 +1,53 @@
+-- 15. Insert 10 books into Books
+INSERT INTO Books
+(book_id,book_name,author,price,category,stock_quantity)
+ VALUES(101,'The Alchemist','Paulo Coelho',350.00,'Fiction',20),
+ (102,'Atomic Habits','James Clear',550.00,'Self Help',15),
+ (103,'Python Programming','John Smith',450.00,'Programming',25),
+ (104,'Data Science Basics','Robert Brown',600.00,'Technology',10),
+ (105,'Wings of Fire','A.P.J. Abdul Kalam',300.00,'Biography',30),
+ (106,'Clean Code','Robert C. Martin',700.00,'Programming',12),
+ (107,'Rich Dad Poor Dad','Robert Kiyosaki',400.00,'Finance',18),
+ (108,'The Psychology of Money','Morgan Housel',500.00,'Finance',22),
+ (109,'Harry Potter','J.K. Rowling',650.00,'Fantasy',8),
+ (110,'Think and Grow Rich','Napoleon Hill',320.00,'Self Help',14);
+
+ -- 16. Insert 8 members into Members
+INSERT INTO Members
+(member_id,member_name,city,phone,email)
+ VALUES(201,'Anu','Chennai','9876543210','anu@gmail.com'),
+ (202,'Priya Devi','Madurai','9876543211','priya@gmail.com'),
+ (203,'Keerthi','Coimbatore','9876543212','keerthi@gmail.com'),
+ (204,'Divya Sri','Tirunelveli','9876543213','divya@gmail.com'),
+ (205,'VijayaKumar','Salem','9876543214','vijaya@gmail.com'),
+ (206,'Anitha Rani','Trichy','9876543215','anitha@gmail.com'),
+ (207,'Suslin','Thoothukudi','9876543216','suslin@gmail.com'),
+ (208,'Keerthana M','Nagercoil','9876543217','keerthana@gmail.com');
+
+-- 17. Insert 10 borrow records into Borrow
+INSERT INTO Borrow
+(borrow_id,book_id,member_id,borrow_date,return_date)
+ VALUES(311,101,201,'2026-09-01','2026-09-10'),
+ (302,102,202,'2026-09-02','2026-09-12'),
+ (303,101,203,'2026-09-03','2026-09-13'),
+ (304,103,204,'2026-09-04','2026-09-15'),
+ (305,104,205,'2026-09-05','2026-09-16'),
+ (306,102,206,'2026-09-06','2026-09-18'),
+ (307,105,207,'2026-09-07','2026-09-17'),
+ (308,103,208,'2026-09-08','2026-09-20'),
+ (309,106,201,'2026-09-09','2026-09-19'),
+ (310,105,202,'2026-09-10','2026-09-21');
+
+ -- 18. Insert one additional book
+INSERT INTO Books(book_id,book_name,author,price,category,stock_quantity)
+ VALUES(111,'Deep Work','Cal Newport',450.00,'Self Help',20);
+
+-- 19. Insert one additional member
+INSERT INTO Members(member_id,member_name,city,phone,email)
+ VALUES(209,'Jershika V','Nagercoil','912343217','jershika@gmail.com');
+
+-- 20. Insert a new borrow record 
+INSERT INTO Borrow(borrow_id,book_id,member_id,borrow_date,return_date) 
+VALUES(312,104,209,'2026-09-15','2026-09-26');
+
+

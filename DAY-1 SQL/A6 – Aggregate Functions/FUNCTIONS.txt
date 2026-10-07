@@ -1,0 +1,29 @@
+-- 55. Count the total number of books
+SELECT COUNT(*) AS total_books FROM Books;
+
+-- 56. Count the total number of members
+SELECT COUNT(*) AS total_members FROM Members;
+
+-- 57. Count the total number of borrow records
+SELECT COUNT(*) AS total_borrow_records FROM Borrow;
+
+-- 58. Calculate the total stock quantity of all books
+SELECT SUM(stock_quantity) AS total_stock FROM Books;
+
+-- 59. Calculate the total price of all books
+SELECT SUM(price) AS total_price FROM Books;
+
+-- 60. Calculate the average price of all books
+SELECT AVG(price) AS average_price FROM Books;
+
+-- 61. Find the highest book price
+SELECT MAX(price) AS highest_price FROM Books;
+
+-- 62. Find the lowest book price
+SELECT MIN(price) AS lowest_price FROM Books;
+
+-- 63. Find the difference between the highest and lowest book prices
+SELECT MAX(price)-MIN(price) AS price_difference FROM Books;
+
+-- 64. Find the average stock quantity
+SELECT AVG(stock_quantity) AS average_stock FROM Books;

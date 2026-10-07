@@ -1,0 +1,13 @@
+-- 28. Delete the book with book_id = 106
+DELETE FROM Books WHERE book_id=106;
+
+-- 29. Delete members who have not borrowed any book
+DELETE FROM Members 
+WHERE NOT EXISTS (SELECT 1 FROM Borrow WHERE Borrow.member_id=Members.member_id);
+
+-- 30. Delete the borrow record with borrow_id = 312
+DELETE FROM Borrow WHERE borrow_id=312;
+
+-- 31. Delete books with stock quantity = 0
+DELETE FROM Books WHERE stock_quantity=0;
+
