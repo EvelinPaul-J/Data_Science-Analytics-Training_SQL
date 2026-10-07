@@ -1,0 +1,17 @@
+-- 1. Display books whose price is greater than the average price
+SELECT * FROM Books WHERE price>(SELECT AVG(price) FROM Books);
+
+-- 2. Display books whose price is less than the average price
+SELECT * FROM Books WHERE price<(SELECT AVG(price) FROM Books);
+
+-- 3. Display the most expensive book
+SELECT * FROM Books WHERE price=(SELECT MAX(price) FROM Books);
+
+-- 4. Display the cheapest book
+SELECT * FROM Books WHERE price=(SELECT MIN(price) FROM Books);
+
+-- 5. Display books having the same price as the book with book_id = 2
+SELECT * FROM Books WHERE price=(SELECT price FROM Books WHERE book_id=2);
+
+-- 6. Display books whose stock quantity is greater than the average stock quantity
+SELECT * FROM Books WHERE stock_quantity>(SELECT AVG(stock_quantity) FROM Books);

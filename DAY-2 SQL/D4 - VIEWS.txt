@@ -1,0 +1,44 @@
+-- 30. Create a view named Technology_Books that displays only Technology books
+CREATE VIEW Technology_Books AS SELECT * FROM Books 
+WHERE category = 'Technology';
+
+-- 31. Display all records from Technology_Books
+SELECT * FROM Technology_Books;
+
+-- 32. Create a view named Expensive_Books containing books priced above ₹600
+CREATE VIEW Expensive_Books AS SELECT * FROM Books 
+WHERE price > 600;
+
+-- 33. Create a view named Available_Books containing books whose stock quantity is greater than 0
+CREATE VIEW Available_Books AS SELECT * FROM Books
+WHERE stock_quantity > 0;
+
+-- 34. Create a view named Library_Borrow_Details combining book name, author, member name, city and borrow date
+CREATE VIEW Library_Borrow_Details 
+AS SELECT Books.book_name, Books.author, Members.member_name, Members.city, Borrow.borrow_date FROM Books INNER JOIN Borrow ON Books.book_id = Borrow.book_id 
+INNER JOIN Members ON Borrow.member_id = Members.member_id;
+
+-- 35. Display data from Library_Borrow_Details
+SELECT * FROM Library_Borrow_Details;
+
+-- 36. Create a view that displays each category with its average book price
+CREATE VIEW Category_Average_Price 
+AS SELECT category, AVG(price) AS average_price 
+FROM Books GROUP BY category;
+
+-- 37. Create a view showing members who have borrowed books
+CREATE VIEW Borrowed_Members 
+AS SELECT DISTINCT Members.member_id, Members.member_name 
+FROM Members 
+INNER JOIN Borrow ON Members.member_id = Borrow.member_id;
+
+-- 38. Display the structure of a created view
+DESCRIBE Technology_Books;
+
+-- 39. Modify or recreate Technology_Books with an additional column
+CREATE OR REPLACE VIEW Technology_Books 
+AS SELECT book_id, book_name, author, price, category, stock_quantity 
+FROM Books WHERE category = 'Technology';
+
+-- 40. Drop one of the views
+DROP VIEW Technology_Books;

@@ -1,0 +1,14 @@
+-- 15. Display all borrow records and matching book names using RIGHT JOIN
+SELECT Borrow.borrow_id,Borrow.book_id,Books.book_name 
+FROM Books 
+RIGHT JOIN Borrow ON Books.book_id=Borrow.book_id;
+
+-- 16. Display all borrow records with member names
+SELECT Borrow.borrow_id,Borrow.member_id,Members.member_name 
+FROM Members 
+RIGHT JOIN Borrow ON Members.member_id=Borrow.member_id;
+
+-- 17. Display all members and their borrow information using RIGHT JOIN
+SELECT Members.member_name,Borrow.borrow_id,Borrow.book_id,Borrow.borrow_date 
+FROM Borrow 
+RIGHT JOIN Members ON Borrow.member_id=Members.member_id;

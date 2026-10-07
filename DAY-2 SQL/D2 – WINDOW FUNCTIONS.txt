@@ -1,0 +1,41 @@
+-- 9. Display each book with its rank based on price in descending order
+SELECT book_name, price, RANK() OVER (ORDER BY price DESC) AS price_rank FROM Books;
+
+-- 10. Display each book with its rank based on price in ascending order
+SELECT book_name, price, RANK() OVER (ORDER BY price ASC) AS price_rank FROM Books;
+
+-- 11. Use ROW_NUMBER() to assign a unique number to each book based on price
+SELECT book_name, price, ROW_NUMBER() OVER (ORDER BY price DESC) AS row_number FROM Books;
+
+-- 12. Use RANK() to rank books within each category
+SELECT book_name, category, price, RANK() OVER (PARTITION BY category ORDER BY price DESC) AS category_rank FROM Books;
+
+-- 13. Use DENSE_RANK() to rank books within each category
+SELECT book_name, category, price, DENSE_RANK() OVER (PARTITION BY category ORDER BY price DESC) AS category_rank FROM Books;
+
+-- 14. Display each book along with the average price of its category using a window function
+SELECT book_name, category, price, AVG(price) OVER (PARTITION BY category) AS category_average_price FROM Books;
+
+-- 15. Display each book along with the highest price in its category
+SELECT book_name, category, price, MAX(price) OVER (PARTITION BY category) AS category_highest_price FROM Books;
+
+-- 16. Display each book along with the lowest price in its category
+SELECT book_name, category, price, MIN(price) OVER (PARTITION BY category) AS category_lowest_price FROM Books;
+
+-- 17. Display each book and the difference between its price and the category average price
+SELECT book_name, category, price, price - AVG(price) OVER (PARTITION BY category) AS price_difference FROM Books;
+
+-- 18. Use SUM() as a window function to calculate cumulative stock quantity
+SELECT book_name, stock_quantity, SUM(stock_quantity) OVER (ORDER BY book_id) AS cumulative_stock FROM Books;
+
+-- 19. Calculate cumulative stock quantity separately for each category
+SELECT book_name, category, stock_quantity, SUM(stock_quantity) OVER (PARTITION BY category ORDER BY book_id) AS cumulative_stock FROM Books;
+
+-- 20. Use LAG() to display the previous book's price
+SELECT book_name, price, LAG(price) OVER (ORDER BY book_id) AS previous_price FROM Books;
+
+-- 21. Use LEAD() to display the next book's price
+SELECT book_name, price, LEAD(price) OVER (ORDER BY book_id) AS next_price FROM Books;
+
+-- 22. Display the difference between the current book price and the previous book price
+SELECT book_name, price, price - LAG(price) OVER (ORDER BY book_id) AS price_difference FROM Books;

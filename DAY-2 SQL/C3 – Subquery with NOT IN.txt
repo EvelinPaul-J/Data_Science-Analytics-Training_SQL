@@ -1,0 +1,11 @@
+-- 11. Display books that have never been borrowed
+SELECT * FROM Books 
+WHERE book_id NOT IN (SELECT book_id FROM Borrow);
+
+-- 12. Display members who have never borrowed any book
+SELECT * FROM Members 
+WHERE member_id NOT IN (SELECT member_id FROM Borrow);
+
+-- 13. Display authors whose books have never been borrowed
+SELECT DISTINCT author FROM Books 
+WHERE author NOT IN (SELECT author FROM Books WHERE book_id IN (SELECT book_id FROM Borrow));

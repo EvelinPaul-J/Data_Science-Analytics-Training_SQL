@@ -1,0 +1,11 @@
+-- 17. Display books for which at least one borrow record exists
+SELECT * FROM Books 
+WHERE EXISTS (SELECT 1 FROM Borrow WHERE Borrow.book_id = Books.book_id);
+
+-- 18. Display members who have at least one borrow record
+SELECT * FROM Members 
+WHERE EXISTS (SELECT 1 FROM Borrow WHERE Borrow.member_id = Members.member_id);
+
+-- 19. Display books that have been borrowed at least twice
+SELECT * FROM Books 
+WHERE EXISTS (SELECT 1 FROM Borrow WHERE Borrow.book_id = Books.book_id GROUP BY Borrow.book_id HAVING COUNT(*) >= 2);

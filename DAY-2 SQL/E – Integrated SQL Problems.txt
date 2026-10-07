@@ -1,0 +1,137 @@
+-- 1. Display the names of members who borrowed books whose price is greater than the average book price
+SELECT DISTINCT Members.member_name 
+FROM Members 
+INNER JOIN Borrow ON Members.member_id = Borrow.member_id 
+INNER JOIN Books ON Borrow.book_id = Books.book_id 
+WHERE Books.price > (SELECT AVG(price) FROM Books);
+
+-- 2. Display the most expensive book in each category along with its author
+SELECT Books.book_name, Books.category, Books.price, Books.author 
+FROM Books 
+INNER JOIN (SELECT category, MAX(price) AS max_price 
+FROM Books GROUP BY category) AS C ON Books.category = C.category AND Books.price = C.max_price;
+
+-- 3. Display categories where the average book price is greater than the overall average book price
+SELECT category, AVG(price) AS average_price 
+FROM Books 
+GROUP BY category 
+HAVING AVG(price) > (SELECT AVG(price) FROM Books);
+
+-- 4. Display members who have borrowed more than one book
+SELECT Members.member_id, Members.member_name, 
+COUNT(Borrow.book_id) AS book_count FROM Members 
+INNER JOIN Borrow ON Members.member_id = Borrow.member_id 
+GROUP BY Members.member_id, Members.member_name
+HAVING COUNT(Borrow.book_id) > 1;
+
+-- 5. Display books that have never been borrowed and whose price is greater than ₹500
+SELECT * FROM Books 
+WHERE book_id NOT IN (SELECT book_id FROM Borrow) AND price > 500;
+
+-- 6. Display the top 3 most expensive books using a window function
+SELECT book_name, price 
+FROM (SELECT book_name, price, ROW_NUMBER() 
+OVER (ORDER BY price DESC) AS price_rank FROM Books) AS B 
+WHERE price_rank <= 3;
+
+-- 7. Display each category, total number of books, average price, and total stock quantity
+SELECT category, 
+COUNT(*) AS total_books, AVG(price) AS average_price, SUM(stock_quantity) AS total_stock 
+FROM Books GROUP BY category;
+
+-- 8. Display each book with category average price and difference from category average
+SELECT book_name, category, price, AVG(price) 
+OVER (PARTITION BY category) AS category_average_price, price - AVG(price) 
+OVER (PARTITION BY category) AS difference_from_average FROM Books;
+
+-- 9. Display each member with the number of books they have borrowed
+SELECT Members.member_id, Members.member_name, 
+COUNT(Borrow.book_id) AS book_count FROM Members 
+LEFT JOIN Borrow ON Members.member_id = Borrow.member_id 
+GROUP BY Members.member_id, Members.member_name;
+
+-- 10. Display members who have borrowed more books than the average number of books borrowed per member
+WITH member_borrow_count AS (SELECT Members.member_id, Members.member_name, COUNT(Borrow.book_id) AS book_count 
+FROM Members 
+LEFT JOIN Borrow ON Members.member_id = Borrow.member_id 
+GROUP BY Members.member_id, Members.member_name) 
+SELECT * FROM member_borrow_count 
+WHERE book_count > (SELECT AVG(book_count) 
+FROM member_borrow_count);
+
+-- 11. Display the highest-priced book borrowed by each member
+SELECT Members.member_name, Books.book_name, Books.price 
+FROM Members 
+INNER JOIN Borrow ON Members.member_id = Borrow.member_id 
+INNER JOIN Books ON Borrow.book_id = Books.book_id 
+WHERE Books.price = (SELECT MAX(B2.price) FROM Borrow BR2 
+INNER JOIN Books B2 ON BR2.book_id = B2.book_id 
+WHERE BR2.member_id = Members.member_id);
+
+-- 12. Display categories with at least 2 books and an average price above ₹500
+SELECT category, COUNT(*) AS book_count, AVG(price) AS average_price 
+FROM Books GROUP BY category HAVING COUNT(*) >= 2 AND AVG(price) > 500;
+
+-- 13. Display the top 2 most expensive books from every category
+SELECT book_name, category, price 
+FROM (SELECT book_name, category, price, ROW_NUMBER() 
+OVER (PARTITION BY category ORDER BY price DESC) AS price_rank 
+FROM Books) AS B WHERE price_rank <= 2;
+
+-- 14. Display books whose price is greater than the average price of their category and stock is greater than 5
+SELECT Books.* FROM Books 
+INNER JOIN (SELECT category, AVG(price) AS average_price 
+FROM Books GROUP BY category) AS C ON Books.category = C.category 
+WHERE Books.price > C.average_price AND Books.stock_quantity > 5;
+
+-- 15. Create a view displaying Book Name, Category, Price, Stock and Borrow Count
+CREATE VIEW Book_Borrow_Summary 
+AS SELECT Books.book_name, Books.category, Books.price, Books.stock_quantity 
+AS stock, COUNT(Borrow.borrow_id) AS borrow_count FROM Books LEFT JOIN Borrow ON Books.book_id = Borrow.book_id
+ GROUP BY Books.book_id, Books.book_name, Books.category, Books.price, Books.stock_quantity;
+
+-- 16. Create a stored procedure that accepts a category and displays books sorted by highest price
+DELIMITER //
+CREATE PROCEDURE GetCategoryBooksSorted(IN p_category VARCHAR(50))
+BEGIN
+    SELECT * FROM Books WHERE category = p_category ORDER BY price DESC;
+END //
+DELIMITER ;
+
+-- 17. Create a stored procedure that accepts minimum and maximum price and displays books within that range
+DELIMITER //
+CREATE PROCEDURE GetBooksByPriceRange(IN p_min_price DECIMAL(10,2), IN p_max_price DECIMAL(10,2))
+BEGIN
+    SELECT * FROM Books WHERE price BETWEEN p_min_price AND p_max_price;
+END //
+DELIMITER ;
+
+-- 18. Create a CTE that calculates borrowed books for each category and display categories with more than 2 borrowed books
+WITH category_borrow_count AS (SELECT Books.category,
+ COUNT(Borrow.borrow_id) AS borrowed_books FROM Books 
+ INNER JOIN Borrow ON Books.book_id = Borrow.book_id 
+ GROUP BY Books.category) SELECT * FROM category_borrow_count 
+ WHERE borrowed_books > 2;
+
+-- 19. Use CASE to classify books into Low, Medium and High price ranges and count the books
+SELECT CASE 
+WHEN price < 400 
+THEN 'Low' 
+WHEN price BETWEEN 400 AND 700 
+THEN 'Medium' 
+ELSE 'High' 
+END AS price_range, COUNT(*) AS book_count 
+FROM Books 
+GROUP BY CASE 
+WHEN price < 400 
+THEN 'Low' 
+WHEN price BETWEEN 400 AND 700 
+THEN 'Medium' 
+ELSE 'High' 
+END;
+
+-- 20. Rank books within each category and display only the top-ranked books
+SELECT book_name, category, price 
+FROM (SELECT book_name, category, price, RANK() 
+OVER (PARTITION BY category ORDER BY price DESC) AS category_rank 
+FROM Books) AS B WHERE category_rank = 1;

@@ -1,0 +1,69 @@
+-- 41. Create a stored procedure named GetAllBooks to display all records from the Books table
+DELIMITER //
+CREATE PROCEDURE GetAllBooks()
+BEGIN
+    SELECT * FROM Books;
+END //
+DELIMITER ;
+
+-- 42. Execute the GetAllBooks procedure
+CALL GetAllBooks();
+
+-- 43. Create a stored procedure named GetAllMembers to display all library members
+DELIMITER //
+CREATE PROCEDURE GetAllMembers()
+BEGIN
+    SELECT * FROM Members;
+END //
+DELIMITER ;
+
+-- 44. Execute the GetAllMembers procedure
+CALL GetAllMembers();
+
+
+-- IN parameter
+
+-- 45. Create a procedure named GetBooksByCategory that accepts a category as an IN parameter
+DELIMITER //
+CREATE PROCEDURE GetBooksByCategory(IN p_category VARCHAR(50))
+BEGIN
+    SELECT * FROM Books WHERE category = p_category;
+END //
+DELIMITER ;
+
+-- 46. Execute the procedure for the Technology category
+CALL GetBooksByCategory('Technology');
+
+-- 47. Create a procedure named GetBooksByAuthor that accepts an author name
+DELIMITER //
+CREATE PROCEDURE GetBooksByAuthor(IN p_author VARCHAR(50))
+BEGIN
+    SELECT * FROM Books WHERE author = p_author;
+END //
+DELIMITER ;
+
+-- 48. Create a procedure named GetBooksAbovePrice that accepts a price and displays books above that price
+DELIMITER //
+CREATE PROCEDURE GetBooksAbovePrice(IN p_price DECIMAL(10,2))
+BEGIN
+    SELECT * FROM Books WHERE price > p_price;
+END //
+DELIMITER ;
+
+-- 49. Create a procedure named GetMemberBorrowDetails that accepts a member_id
+DELIMITER //
+CREATE PROCEDURE GetMemberBorrowDetails(IN p_member_id INT)
+BEGIN
+    SELECT Books.book_name, Books.author, Borrow.borrow_date, Borrow.return_date
+    FROM Books INNER JOIN Borrow ON Books.book_id = Borrow.book_id
+    WHERE Borrow.member_id = p_member_id;
+END //
+DELIMITER ;
+
+-- 50. Create a procedure named GetCategoryBooks that accepts a category and price limit
+DELIMITER //
+CREATE PROCEDURE GetCategoryBooks(IN p_category VARCHAR(50), IN p_price DECIMAL(10,2))
+BEGIN
+    SELECT * FROM Books WHERE category = p_category AND price <= p_price;
+END //
+DELIMITER ;

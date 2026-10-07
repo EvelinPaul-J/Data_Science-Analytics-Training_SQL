@@ -1,0 +1,35 @@
+-- 1. Create a CTE to calculate the average book price and display books priced above the average
+WITH avg_price AS (SELECT AVG(price) AS average_price FROM Books) 
+SELECT * FROM Books 
+WHERE price > (SELECT average_price FROM avg_price);
+
+-- 2. Create a CTE to calculate the average price for each category
+WITH category_avg AS (SELECT category, AVG(price) AS average_price 
+FROM Books GROUP BY category) 
+SELECT * FROM category_avg;
+
+-- 3. Display books whose price is greater than the average price of their category using a CTE
+WITH category_avg AS (SELECT category, AVG(price) AS average_price 
+FROM Books GROUP BY category) 
+SELECT Books.* FROM Books JOIN category_avg ON Books.category = category_avg.category WHERE Books.price > category_avg.average_price;
+
+-- 4. Create a CTE to calculate total stock quantity for each category
+WITH category_stock AS (SELECT category, SUM(stock_quantity) AS total_stock 
+FROM Books GROUP BY category) SELECT * FROM category_stock;
+
+-- 5. Display categories whose total stock quantity is greater than 20
+WITH category_stock AS (SELECT category, SUM(stock_quantity) AS total_stock 
+FROM Books GROUP BY category) SELECT * FROM category_stock WHERE total_stock > 20;
+
+-- 6. Create a CTE to find the most expensive book in each category
+WITH category_max AS (SELECT category, MAX(price) AS max_price 
+FROM Books GROUP BY category) SELECT Books.* FROM Books JOIN category_max ON Books.category = category_max.category AND Books.price = category_max.max_price;
+
+-- 7. Create a CTE to calculate the number of books written by each author
+WITH author_count AS (SELECT author, COUNT(*) AS book_count 
+FROM Books GROUP BY author) SELECT * FROM author_count;
+
+-- 8. Display authors who have written more than one book
+WITH author_count AS (SELECT author, COUNT(*) AS book_count 
+FROM Books GROUP BY author) SELECT * FROM author_count 
+WHERE book_count > 1;

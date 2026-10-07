@@ -1,0 +1,31 @@
+-- 9. Display all books and the members who borrowed them
+SELECT Books.book_name,Members.member_name 
+FROM Books LEFT JOIN Borrow ON Books.book_id=Borrow.book_id 
+LEFT JOIN Members ON Borrow.member_id=Members.member_id;
+
+-- 10. Display all books including books that have never been borrowed
+SELECT Books.book_name,Members.member_name 
+FROM Books LEFT JOIN Borrow ON Books.book_id=Borrow.book_id 
+LEFT JOIN Members ON Borrow.member_id=Members.member_id;
+
+-- 11. Display all members and their borrowed books
+SELECT Members.member_name,Books.book_name 
+FROM Members LEFT JOIN Borrow ON Members.member_id=Borrow.member_id 
+LEFT JOIN Books ON Borrow.book_id=Books.book_id;
+
+-- 12. Display all members including members who have never borrowed a book
+SELECT Members.member_name,Books.book_name 
+FROM Members LEFT JOIN Borrow ON Members.member_id=Borrow.member_id 
+LEFT JOIN Books ON Borrow.book_id=Books.book_id;
+
+-- 13. Find books that have never been borrowed
+SELECT Books.book_name 
+FROM Books 
+LEFT JOIN Borrow ON Books.book_id=Borrow.book_id 
+WHERE Borrow.book_id IS NULL;
+
+-- 14. Find members who have never borrowed any book
+SELECT Members.member_name 
+FROM Members 
+LEFT JOIN Borrow ON Members.member_id=Borrow.member_id
+ WHERE Borrow.member_id IS NULL;

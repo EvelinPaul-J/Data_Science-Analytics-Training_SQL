@@ -1,0 +1,44 @@
+-- 1. Display book names and member names for all borrowed books
+SELECT Books.book_name,Members.member_name 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+INNER JOIN Members ON Borrow.member_id=Members.member_id;
+
+-- 2. Display book name, member name, and borrow date
+SELECT Books.book_name,Members.member_name,Borrow.borrow_date 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+INNER JOIN Members ON Borrow.member_id=Members.member_id;
+
+-- 3. Display book name, author, member name, and city
+SELECT Books.book_name,Books.author,Members.member_name,Members.city 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+INNER JOIN Members ON Borrow.member_id=Members.member_id;
+
+-- 4. Display all books borrowed by members from Chennai
+SELECT Books.book_name 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+INNER JOIN Members ON Borrow.member_id=Members.member_id 
+WHERE Members.city='Chennai';
+
+-- 5. Display all books borrowed by a specific member
+SELECT Books.book_name 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+INNER JOIN Members ON Borrow.member_id=Members.member_id 
+WHERE Members.member_id=201;
+
+-- 6. Display member names who have borrowed Technology books
+SELECT Members.member_name 
+FROM Members 
+INNER JOIN Borrow ON Members.member_id=Borrow.member_id 
+INNER JOIN Books ON Borrow.book_id=Books.book_id 
+WHERE Books.category='Technology';
+
+-- 7. Display book names and their corresponding borrowers
+SELECT Books.book_name,Members.member_name 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+INNER JOIN Members ON Borrow.member_id=Members.member_id;
+
+-- 8. Display borrow details sorted by borrow date
+SELECT Books.book_name,Members.member_name,Borrow.borrow_date 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+INNER JOIN Members ON Borrow.member_id=Members.member_id 
+ORDER BY Borrow.borrow_date ASC;

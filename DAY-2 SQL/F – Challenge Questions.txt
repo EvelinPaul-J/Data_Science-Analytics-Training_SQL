@@ -1,0 +1,87 @@
+-- 1. Find the second-highest priced book without using LIMIT
+SELECT * FROM Books 
+WHERE price = (SELECT MAX(price) 
+FROM Books WHERE price < (SELECT MAX(price) FROM Books));
+
+-- 2. Find the second-highest priced book using a subquery
+SELECT * FROM Books 
+WHERE price = (SELECT MAX(price) 
+FROM Books 
+WHERE price < (SELECT MAX(price) FROM Books));
+
+-- 3. Find the third-highest priced book using a window function
+SELECT * FROM (SELECT Books.*, DENSE_RANK() 
+OVER (ORDER BY price DESC) AS price_rank FROM Books) AS B 
+WHERE price_rank = 3;
+
+-- 4. Find the category containing the highest-priced book
+SELECT DISTINCT category FROM Books 
+WHERE price = (SELECT MAX(price) FROM Books);
+
+-- 5. Find the author who has written the maximum number of books
+SELECT author, COUNT(*) AS book_count 
+FROM Books GROUP BY author HAVING COUNT(*) = (SELECT MAX(book_count) 
+FROM (SELECT COUNT(*) AS book_count 
+FROM Books GROUP BY author) AS A);
+
+-- 6. Find members who have borrowed the maximum number of books
+SELECT Members.member_id, Members.member_name, 
+COUNT(Borrow.book_id) AS book_count FROM Members 
+INNER JOIN Borrow ON Members.member_id = Borrow.member_id 
+GROUP BY Members.member_id, Members.member_name 
+HAVING COUNT(Borrow.book_id) = (SELECT MAX(book_count) FROM (SELECT COUNT(*) AS book_count FROM Borrow GROUP BY member_id) AS B);
+
+-- 7. Find the most frequently borrowed book
+SELECT Books.book_id, Books.book_name, 
+COUNT(Borrow.borrow_id) AS borrow_count 
+FROM Books INNER JOIN Borrow ON Books.book_id = Borrow.book_id 
+GROUP BY Books.book_id, Books.book_name 
+HAVING COUNT(Borrow.borrow_id) = (SELECT MAX(borrow_count) 
+FROM (SELECT COUNT(*) AS borrow_count FROM Borrow GROUP BY book_id) AS B);
+
+-- 8. Find books that have never been borrowed
+SELECT * FROM Books 
+WHERE book_id NOT IN (SELECT book_id FROM Borrow);
+
+-- 9. Find categories where every book costs more than ₹300
+SELECT category FROM Books 
+GROUP BY category HAVING MIN(price) > 300;
+
+-- 10. Find categories where at least one book costs more than ₹800
+SELECT DISTINCT category 
+FROM Books 
+WHERE category IN (SELECT category FROM Books WHERE price > 800);
+
+-- 11. Find books whose price is greater than the average price but lower than the maximum price
+SELECT * FROM Books
+ WHERE price > (SELECT AVG(price) FROM Books) AND price < (SELECT MAX(price) FROM Books);
+
+-- 12. Find the top 2 expensive books in every category
+SELECT book_name, category, price 
+FROM (SELECT book_name, category, price, ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) AS price_rank FROM Books) AS B WHERE price_rank <= 2;
+
+-- 13. Find members who have borrowed books from more than one category
+SELECT Members.member_id, Members.member_name 
+FROM Members INNER JOIN Borrow ON Members.member_id = Borrow.member_id INNER JOIN Books ON Borrow.book_id = Books.book_id GROUP BY Members.member_id, Members.member_name HAVING COUNT(DISTINCT Books.category) > 1;
+
+-- 14. Find the category with the highest total stock value
+SELECT category, SUM(price * stock_quantity) AS total_stock_value FROM Books GROUP BY category ORDER BY total_stock_value DESC LIMIT 1;
+
+-- 15. Calculate the total library inventory value using price × stock_quantity
+SELECT SUM(price * stock_quantity) AS total_inventory_value FROM Books;
+
+-- 16. Display the inventory value for each category
+SELECT category, SUM(price * stock_quantity) AS inventory_value FROM Books GROUP BY category;
+
+-- 17. Rank categories based on their total inventory value
+SELECT category, SUM(price * stock_quantity) AS inventory_value, RANK() OVER (ORDER BY SUM(price * stock_quantity) DESC) AS category_rank FROM Books GROUP BY category;
+
+-- 18. Find the member who has borrowed the most expensive book
+SELECT DISTINCT Members.member_id, Members.member_name, Books.book_name, Books.price FROM Members INNER JOIN Borrow ON Members.member_id = Borrow.member_id INNER JOIN Books ON Borrow.book_id = Books.book_id WHERE Books.price = (SELECT MAX(price) FROM Books);
+
+-- 19. Display each member's borrowed-book count and rank members based on the count
+SELECT Members.member_id, Members.member_name, COUNT(Borrow.book_id) AS book_count, RANK() OVER (ORDER BY COUNT(Borrow.book_id) DESC) AS member_rank FROM Members LEFT JOIN Borrow ON Members.member_id = Borrow.member_id GROUP BY Members.member_id, Members.member_name;
+
+-- 20. Create a complete library report using JOIN + CASE + Window Function
+SELECT Books.book_name, Books.author, Books.category, Books.price, Books.stock_quantity AS stock, Members.member_name, Borrow.borrow_date, CASE WHEN Borrow.return_date IS NULL THEN 'Not Returned' ELSE 'Returned' END AS borrow_status, CASE WHEN Books.price > 600 THEN 'Expensive' ELSE 'Affordable' END AS price_classification, RANK() OVER (PARTITION BY Books.category ORDER BY Books.price DESC) AS category_rank FROM Books LEFT JOIN Borrow ON Books.book_id = Borrow.book_id 
+LEFT JOIN Members ON Borrow.member_id = Members.member_id;

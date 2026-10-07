@@ -1,0 +1,63 @@
+-- 23. Classify books as Expensive or Affordable
+SELECT book_name, price, CASE 
+WHEN price > 600 
+THEN 'Expensive' 
+ELSE 'Affordable' 
+END AS price_category FROM Books;
+
+-- 24. Classify books based on price
+SELECT book_name, price, CASE 
+WHEN price < 400 
+THEN 'Low' 
+WHEN price BETWEEN 400 AND 700 
+THEN 'Medium' 
+ELSE 'High' 
+END AS price_category FROM Books;
+
+-- 25. Classify stock quantity
+SELECT book_name, stock_quantity, CASE 
+WHEN stock_quantity = 0 
+THEN 'Out of Stock' 
+WHEN stock_quantity BETWEEN 1 AND 5 
+THEN 'Low Stock' 
+ELSE 'Available' 
+END AS stock_status FROM Books;
+
+-- 26. Display book name, price, and price category
+SELECT book_name, price, CASE 
+WHEN price > 600 
+THEN 'Expensive' 
+ELSE 'Affordable' 
+END AS price_category FROM Books;
+
+-- 27. Display book name, stock quantity, and stock status
+SELECT book_name, stock_quantity, CASE
+ WHEN stock_quantity = 0 
+ THEN 'Out of Stock' 
+ WHEN stock_quantity BETWEEN 1 AND 5 
+ THEN 'Low Stock' 
+ ELSE 'Available' 
+ END AS stock_status FROM Books;
+
+-- 28. Use CASE with GROUP BY to count books in different price categories
+SELECT CASE 
+WHEN price < 400 
+THEN 'Low' 
+WHEN price BETWEEN 400 AND 700 
+THEN 'Medium' 
+ELSE 'High' 
+END AS price_category, COUNT(*) AS book_count FROM Books 
+GROUP BY CASE 
+WHEN price < 400 
+THEN 'Low' 
+WHEN price BETWEEN 400 AND 700 
+THEN 'Medium' 
+ELSE 'High' 
+END;
+
+-- 29. Use CASE to calculate a ₹100 discount for books priced above ₹700
+SELECT book_name, price, CASE 
+WHEN price > 700 
+THEN 100 
+ELSE 0 
+END AS discount FROM Books;

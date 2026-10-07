@@ -1,0 +1,36 @@
+-- 21. Count how many books each member has borrowed
+SELECT Members.member_id,Members.member_name,
+COUNT(Borrow.book_id) AS book_count 
+FROM Members INNER JOIN Borrow ON Members.member_id=Borrow.member_id 
+GROUP BY Members.member_id,Members.member_name;
+
+-- 22. Find the number of members who have borrowed each book
+SELECT Books.book_id,Books.book_name,
+COUNT(Borrow.member_id) AS member_count 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+GROUP BY Books.book_id,Books.book_name;
+
+-- 23. Find the most borrowed book
+SELECT Books.book_id,Books.book_name,
+COUNT(Borrow.borrow_id) AS borrow_count 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+GROUP BY Books.book_id,Books.book_name 
+ORDER BY borrow_count DESC LIMIT 1;
+
+-- 24. Find members who have borrowed more than 2 books
+SELECT Members.member_id,Members.member_name,
+COUNT(Borrow.book_id) AS book_count 
+FROM Members INNER JOIN Borrow ON Members.member_id=Borrow.member_id
+GROUP BY Members.member_id,Members.member_name HAVING COUNT(Borrow.book_id)>2;
+
+-- 25. Find categories and the number of times books from each category were borrowed
+SELECT Books.category,
+COUNT(Borrow.borrow_id) AS borrow_count FROM Books 
+INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+GROUP BY Books.category;
+
+-- 26. Find the total number of borrowed books for each category
+SELECT Books.category,
+COUNT(Borrow.book_id) AS total_borrowed_books 
+FROM Books INNER JOIN Borrow ON Books.book_id=Borrow.book_id 
+GROUP BY Books.category;
